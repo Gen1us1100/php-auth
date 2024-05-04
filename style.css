@@ -1,0 +1,12 @@
+*:not(h2,h1){
+    font-size: large;
+}
+
+.signup_form{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+.signup_form>input{
+    margin: 5px;
+}
