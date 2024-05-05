@@ -2,17 +2,7 @@
     require "db.php";
     $result = NULL;
     $usernameErr = $emailErr = $passwordErr = $emailErrLogin= '';
-    function already_exists(string $table_name,string $col_name,string $value){
-        // check if username or email already exists in database
-        global $conn;
-        $check_col = "SELECT {$col_name} FROM {$table_name} where $col_name=?";
-        $stmt = $conn->prepare($check_col);
-        $stmt->bind_param("s",$value);
-        $stmt->execute();
-        $stmt->store_result();
-        $result = $stmt->num_rows();
-        return ($result>0)?True:False;   
-    }
+    require_once "functions.php";
 
 if(isset($_POST['signup'])){
     if(empty($_POST['username'])){
@@ -54,8 +44,9 @@ if(isset($_POST['signup'])){
             $stmt = mysqli_prepare($conn,$query);
             mysqli_stmt_bind_param($stmt,"sss", $email,$username, $password);
             $result = mysqli_stmt_execute($stmt);
-            print_r(mysqli_error_list($conn));
-        
+            // print_r(mysqli_error_list($conn));
+            echo "Signup successful!";
+            echo '<a href="login.php"><button>Login</button></a>';
     }
 }
 }
@@ -77,6 +68,5 @@ if(isset($_POST['signup'])){
 <?php
     if(isset($_POST["signup"])){
         $usernameErr = $emailErr = $passwordErr = '';
-        // echo $email;
     }
 ?>
