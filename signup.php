@@ -63,6 +63,7 @@ if(isset($_POST['signup'])){
     <?php echo ($passwordErr)?"<p>{$passwordErr}</p>":""?>
     <input type="submit" value="Sign Up!" name="signup">
 </form>
+Already Registered? <a href="login.php">Login</a>
 <?php echo ($emailErrLogin)?$emailErrLogin:""?>
 
 <?php

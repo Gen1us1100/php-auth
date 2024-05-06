@@ -1,8 +1,9 @@
 <?php
     require "db.php";
     require_once "functions.php";
+    session_start();
     $emailErr = $passwordErr = "";
-    $LoggedIn = False;
+    $LoggedIn = $emailVerified  = False;
     if(isset($_POST['login'])){
         if(empty($_POST['email'])){
             $emailErr = 'email can\'t be empty';
@@ -25,6 +26,7 @@
         }
         if(isset($email) && isset($password)){
             if(already_exists("users","email","{$email}")){
+                $emailVerified = True;
                 mysqli_report(MYSQLI_REPORT_ALL);
                 $query = "SELECT * from users where email=?";
                 $stmt = $conn->prepare($query);
@@ -39,9 +41,13 @@
                 
                 if(password_verify($password,$password_hash)){
                     
-                    $LoggedIn = True;
+                    $LoggedIn  = True;
                 }
                 
+            }
+            else{
+                echo "Email does not exist!<br> Sign Up instead!";
+                echo '<a href="signup.php"><button>Signup</button></a>';
             }
         }
     }
@@ -56,15 +62,27 @@
     <input type="submit" value="Login!" name="login">
 </form>
 
+
 <?php
 if(isset($_POST['login'])){
+    if($emailVerified){
     if($LoggedIn){
+        $_SESSION["username"] = $username;
+        $_SESSION["email"] = $email;
+        header('Location: dashboard.php');
         echo "Login Successful!<br>";
         echo "Username : {$username}<br>";
         echo "Email: {$email}";
     }
     else{
-        echo "Incorrect Password! Retry";
+        echo "Incorrect Password! Retry<br>";
     }
 }
+}
+?>
+<?php
+if(!$LoggedIn){
+    echo 'Not Registered? <a href="signup.php">Signup</a>';
+}
+
 ?>
