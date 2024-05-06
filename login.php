@@ -3,7 +3,7 @@
     require_once "functions.php";
     session_start();
     $emailErr = $passwordErr = "";
-    $LoggedIn = $emailVerified  = False;
+    $LoggedIn = $_SESSION["loggedin"] = $emailVerified  = False;
     if(isset($_POST['login'])){
         if(empty($_POST['email'])){
             $emailErr = 'email can\'t be empty';
@@ -69,6 +69,7 @@ if(isset($_POST['login'])){
     if($LoggedIn){
         $_SESSION["username"] = $username;
         $_SESSION["email"] = $email;
+        $_SESSION["loggedin"] = $LoggedIn;
         header('Location: dashboard.php');
         echo "Login Successful!<br>";
         echo "Username : {$username}<br>";
